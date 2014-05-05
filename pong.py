@@ -47,15 +47,23 @@ while True:
         if event.type == QUIT:
             exit()
         if event.type == KEYDOWN:
-            if event.key == K_UP:
+
+            if event.key == K_q:
                 bar1_move = -ai_speed
-            elif event.key == K_DOWN:
+            elif event.key == K_a:
                 bar1_move = ai_speed
-        elif event.type == KEYUP:
+
             if event.key == K_UP:
-                bar1_move = 0.
+                bar2_move = -ai_speed
             elif event.key == K_DOWN:
+                bar2_move = ai_speed
+
+        elif event.type == KEYUP:
+            if event.key == K_q or event.key == K_a:
                 bar1_move = 0.
+            if event.key == K_UP or event.key == K_DOWN:
+                bar2_move = 0.
+
 
     score1 = font.render(str(bar1_score), True,(255,255,255))
     score2 = font.render(str(bar2_score), True,(255,255,255))
@@ -71,6 +79,8 @@ while True:
 
 
     bar1_y += bar1_move
+    bar2_y += bar2_move
+
 
 # movement of circle
     time_passed = clock.tick(30)
@@ -81,15 +91,15 @@ while True:
     ai_speed = speed_circ * time_sec
 
 #AI of the computer.
-    if circle_x >= 305.:
-        if not bar2_y == circle_y + 7.5:
-            if bar2_y < circle_y + 7.5:
-                bar2_y += ai_speed
-            if  bar2_y > circle_y - 42.5:
-                bar2_y -= ai_speed
-        else:
-            bar2_y == circle_y + 7.5
-
+##    if circle_x >= 305.:
+##        if not bar1_y == circle_y + 7.5:
+##            if bar1_y < circle_y + 7.5:
+##                bar1_y += ai_speed
+##            if  bar1_y > circle_y - 42.5:
+##                bar1_y -= ai_speed
+##        else:
+##            bar1_y == circle_y + 7.5
+##
 
     if bar1_y >= 420.: bar1_y = 420.
     elif bar1_y <= 10. : bar1_y = 10.
