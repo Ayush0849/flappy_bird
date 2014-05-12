@@ -76,6 +76,9 @@ if __name__ == '__main__':
     bat1 = Bat((0, 0, 255))
     bat2 = Bat((255, 0, 0))
 
+    text1 = font.render(str("Press SPACE to start!"), True, (255, 255, 255))
+    text2 = font.render(str("Winner: first one to win 4 set!"), True, (255, 255, 255))
+    text3 = font.render(str("q,a for blue, up,down for red"), True, (255, 255, 255))
     disp_instruction = True
     while disp_instruction:
         for event in pygame.event.get():
@@ -94,6 +97,11 @@ if __name__ == '__main__':
         bat2.draw(screen)
         ball.update((circle_x, circle_y))
         ball.draw(screen)
+
+        screen.blit(text1, (80., 200.))
+        screen.blit(text2, (80., 200 + font.get_height()))
+        screen.blit(text3, (80., 200 + 2 * font.get_height()))
+
         clock.tick(30)
         pygame.display.update()
 
@@ -145,6 +153,10 @@ if __name__ == '__main__':
         screen.blit(score1, (700., 200.))
         screen.blit(score2, (700., 200 + font.get_height()))
         screen.blit(game_score, (700., 200 + 2 * font.get_height()))
+
+        if game_score_arr[0] >= 4 or game_score_arr[1] >= 4:
+            text = font.render(str("Game Over!"), True, (255, 255, 255))
+            screen.blit(text, (250., 200.))
 
         time_passed = clock.tick(30)
         time_sec = time_passed / 1000.0
