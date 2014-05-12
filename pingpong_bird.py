@@ -1,47 +1,45 @@
-
 import pygame
 from pygame.locals import *
 from sys import exit
-import random
+
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        b_sur = pygame.Surface((15,15))
-        bird_img = pygame.transform.scale(pygame.image.load("flappy_bird.jpg"),(15,15))
+        b_sur = pygame.Surface((15, 15))
+        bird_img = pygame.transform.scale(pygame.image.load("flappy_bird.jpg"), (15, 15))
         bird_img = bird_img.convert_alpha()
-        b_sur.blit(bird_img, (0,0))
+        b_sur.blit(bird_img, (0, 0))
 
-        #circ = pygame.draw.circle(circ_sur,(0,255,0),(15//2,15//2),15//2)
+        # circ = pygame.draw.circle(circ_sur,(0,255,0),(15//2,15//2),15//2)
         b_sur = b_sur.convert()
-        b_sur.set_colorkey((0,0,0))
+        b_sur.set_colorkey((0, 0, 0))
         self.image = b_sur
         self.rect = self.image.get_rect()
 
-    def update(self,pos):
+    def update(self, pos):
         self.rect.topleft = pos
         pass
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
+    def draw(self, a_screen):
+        a_screen.blit(self.image, self.rect.topleft)
         pass
 
 
 class Bat(pygame.sprite.Sprite):
-    def __init__(self, color):
+    def __init__(self, a_color):
         pygame.sprite.Sprite.__init__(self)
-        bat = pygame.Surface((10,50))
+        bat = pygame.Surface((10, 50))
         bat = bat.convert()
-        bat.fill(color)
+        bat.fill(a_color)
         self.image = bat
         self.rect = self.image.get_rect()
 
-    def update(self,pos):
+    def update(self, pos):
         self.rect.topleft = pos
 
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
+    def draw(self, a_screen):
+        a_screen.blit(self.image, self.rect.topleft)
         pass
 
 
@@ -51,27 +49,27 @@ def init_params():
     global circle_x, circle_y, speed_circ
     global speed_x, speed_y, bar1_score, bar2_score
 
-    bar1_x, bar2_x = 10. , 620.
-    bar1_y, bar2_y = 215. , 215.
+    bar1_x, bar2_x = 10., 620.
+    bar1_y, bar2_y = 215., 215.
     circle_x, circle_y = 307.5, 232.5
-    bar1_move, bar2_move = 0. , 0.
-    speed_x, speed_y, speed_circ = 250./1, 250./1, 250.
-    bar1_score, bar2_score = 0,0
-    #clock and font objects
+    bar1_move, bar2_move = 0., 0.
+    speed_x, speed_y, speed_circ = 250. / 1, 250. / 1, 250.
+    bar1_score, bar2_score = 0, 0
+    # clock and font objects
+
 
 if __name__ == '__main__':
     pygame.init()
-    screen=pygame.display.set_mode((800,480), 0, 32)
+    screen = pygame.display.set_mode((800, 480), 0, 32)
     pygame.display.set_caption("Ping Pong Flappy Bird!")
 
-
-    #Creating 2 bars, a ball and background.
-    back = pygame.Surface((800,480))
+    # Creating 2 bars, a ball and background.
+    back = pygame.Surface((800, 480))
     background = back.convert()
-    background.fill((0,0,0))
+    background.fill((0, 0, 0))
 
     clock = pygame.time.Clock()
-    font = pygame.font.SysFont("calibri",40)
+    font = pygame.font.SysFont("calibri", 40)
 
     init_params()
     ball = Ball()
@@ -86,27 +84,20 @@ if __name__ == '__main__':
             if event.type == KEYDOWN and event.key == K_SPACE:
                 disp_instruction = False
 
-        screen.blit(background,(0,0))
-        frame = pygame.draw.rect(screen,(255,255,255),Rect((5,5),(630,470)),2)
-        middle_line = pygame.draw.aaline(screen,(255,255,255),(330,5),(330,475))
+        screen.blit(background, (0, 0))
+        frame = pygame.draw.rect(screen, (255, 255, 255), Rect((5, 5), (630, 470)), 2)
+        middle_line = pygame.draw.aaline(screen, (255, 255, 255), (330, 5), (330, 475))
 
-        bat1.update((bar1_x,bar1_y))
+        bat1.update((bar1_x, bar1_y))
         bat1.draw(screen)
-        bat2.update((bar2_x,bar2_y))
+        bat2.update((bar2_x, bar2_y))
         bat2.draw(screen)
         ball.update((circle_x, circle_y))
         ball.draw(screen)
         clock.tick(30)
         pygame.display.update()
 
-
-    bar1_x, bar2_x = 10. , 620.
-    bar1_y, bar2_y = 215. , 215.
-    circle_x, circle_y = 307.5, 232.5
-    bar1_move, bar2_move = 0. , 0.
-    speed_x, speed_y, speed_circ = 250./1, 250./1, 250.
-    bar1_score, bar2_score = 0,0
-
+    init_params()
     set_over = False
     game_score_arr = [0, 0]
     while True:
@@ -136,29 +127,27 @@ if __name__ == '__main__':
                     if event.key == K_UP or event.key == K_DOWN:
                         bar2_move = 0.
 
+        score1 = font.render(str(bar1_score), True, (0, 0, 255))
+        score2 = font.render(str(bar2_score), True, (255, 0, 0))
+        game_score = font.render("%d:%d" % (game_score_arr[0], game_score_arr[1]), True, (255, 255, 255))
 
-        score1 = font.render(str(bar1_score), True,(0,0,255))
-        score2 = font.render(str(bar2_score), True,(255,0,0))
-        game_score = font.render("%d:%d" % (game_score_arr[0], game_score_arr[1]), True,(255, 255, 255))
+        screen.blit(background, (0, 0))
+        frame = pygame.draw.rect(screen, (255, 255, 255), Rect((5, 5), (630, 470)), 2)
+        middle_line = pygame.draw.aaline(screen, (255, 255, 255), (330, 5), (330, 475))
 
-        screen.blit(background,(0,0))
-        frame = pygame.draw.rect(screen,(255,255,255),Rect((5,5),(630,470)),2)
-        middle_line = pygame.draw.aaline(screen,(255,255,255),(330,5),(330,475))
-
-        bat1.update((bar1_x,bar1_y))
+        bat1.update((bar1_x, bar1_y))
         bat1.draw(screen)
-        bat2.update((bar2_x,bar2_y))
+        bat2.update((bar2_x, bar2_y))
         bat2.draw(screen)
         ball.update((circle_x, circle_y))
         ball.draw(screen)
 
-        screen.blit(score1,(700.,200.))
-        screen.blit(score2,(700.,200+font.get_height()))
-        screen.blit(game_score,(700.,200+2*font.get_height()))
+        screen.blit(score1, (700., 200.))
+        screen.blit(score2, (700., 200 + font.get_height()))
+        screen.blit(game_score, (700., 200 + 2 * font.get_height()))
 
         time_passed = clock.tick(30)
         time_sec = time_passed / 1000.0
-
 
         if not set_over:
             bar1_y += bar1_move
@@ -168,11 +157,14 @@ if __name__ == '__main__':
             circle_y += speed_y * time_sec
             ai_speed = speed_circ * time_sec
 
-            if bar1_y >= 420.: bar1_y = 420.
-            elif bar1_y <= 10. : bar1_y = 10.
-            if bar2_y >= 420.: bar2_y = 420.
-            elif bar2_y <= 10.: bar2_y = 10.
-
+            if bar1_y >= 420.:
+                bar1_y = 420.
+            elif bar1_y <= 10.:
+                bar1_y = 10.
+            if bar2_y >= 420.:
+                bar2_y = 420.
+            elif bar2_y <= 10.:
+                bar2_y = 10.
 
             if pygame.sprite.collide_rect(ball, bat1):
                 circle_x = 20.
@@ -185,11 +177,11 @@ if __name__ == '__main__':
             if circle_x < 5.:
                 bar2_score += 1
                 circle_x, circle_y = 320., 232.5
-        ##        bar1_y,bar_2_y = 215., 215.
+                ##        bar1_y,bar_2_y = 215., 215.
             elif circle_x > 620.:
                 bar1_score += 1
                 circle_x, circle_y = 307.5, 232.5
-        ##        bar1_y, bar2_y = 215., 215.
+                ##        bar1_y, bar2_y = 215., 215.
             if circle_y <= 10.:
                 speed_y = -speed_y
                 circle_y = 10.
