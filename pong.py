@@ -9,7 +9,7 @@ pygame.init()
 screen=pygame.display.set_mode((640,480),0,32)
 pygame.display.set_caption("Ping Pong!")
 
-#Creating 2 bars, a ball and background.
+#Creating 2 bars, a flappy bird and background.
 back = pygame.Surface((640,480))
 background = back.convert()
 background.fill((0,0,0))
